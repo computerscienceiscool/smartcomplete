@@ -62,7 +62,7 @@ func NewCompletionService(config *Config) (*CompletionService, error) {
 	return &CompletionService{
 		config:      config,
 		cache:       NewCache(config.CacheTTL, config.MaxCacheSize, config.EnableCache),
-		rateLimiter: NewRateLimiter(config.MaxRequestsPerMinute, config.MaxRequestsPerHour),
+		rateLimiter: NewRateLimiter(),
 	}, nil
 }
 
@@ -83,7 +83,7 @@ func (s *CompletionService) Complete(
 		return nil, err
 	}
 
-	if err := s.rateLimiter.CheckLimit(req.ProjectID); err != nil {
+	if err := s.rateLimiter.CheckLimit(req.ProjectID, s.config.MaxRequestsPerMinute, s.config.MaxRequestsPerHour); err != nil {
 		return nil, err
 	}
 

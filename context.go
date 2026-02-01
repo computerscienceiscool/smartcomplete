@@ -1,20 +1,18 @@
 package smartcomplete
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 )
 
 // CompletionContext contains all context for a completion
 type CompletionContext struct {
-	Prefix              string
-	Suffix              string
-	AgentsInstructions  string
-	DiscussionContext   string
-	AdditionalFiles     []FileContext
-	Language            string
+	Prefix             string
+	Suffix             string
+	AgentsInstructions string
+	DiscussionContext  string
+	AdditionalFiles    []FileContext
+	Language           string
 }
 
 // FileContext represents content from an additional file
@@ -52,12 +50,12 @@ func (g *ContextGatherer) GatherContext(
 	additionalContext := g.gatherAdditionalFiles(req, baseDir, projectGetter)
 
 	ctx := &CompletionContext{
-		Prefix:              prefix,
-		Suffix:              suffix,
-		AgentsInstructions:  agentsInstructions,
-		DiscussionContext:   discussionContext,
-		AdditionalFiles:     additionalContext,
-		Language:            detectLanguage(req.FilePath),
+		Prefix:             prefix,
+		Suffix:             suffix,
+		AgentsInstructions: agentsInstructions,
+		DiscussionContext:  discussionContext,
+		AdditionalFiles:    additionalContext,
+		Language:           detectLanguage(req.FilePath),
 	}
 
 	// Trim to fit within token budget
@@ -69,7 +67,7 @@ func (g *ContextGatherer) GatherContext(
 // extractPrefixSuffix splits file content at cursor position
 func extractPrefixSuffix(content string, line, col int) (prefix, suffix string) {
 	lines := strings.Split(content, "\n")
-	
+
 	if line < 0 {
 		line = 0
 	}
@@ -186,7 +184,7 @@ func (g *ContextGatherer) trimToTokenBudget(ctx *CompletionContext) {
 		return len(s) / 4
 	}
 
-	currentTokens := estimateTokens(ctx.Prefix) + 
+	currentTokens := estimateTokens(ctx.Prefix) +
 		estimateTokens(ctx.Suffix) +
 		estimateTokens(ctx.AgentsInstructions) +
 		estimateTokens(ctx.DiscussionContext)
