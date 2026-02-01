@@ -1,0 +1,23 @@
+# SmartComplete Configuration Example
+# Copy this to your Storm project and customize as needed
+
+# LLM Settings
+default_llm: "sonar-deep-research"
+max_tokens: 500
+temperature: 0.2
+request_timeout: 30s
+
+# Context Gathering
+max_context_tokens: 10000
+include_agents_file: true
+include_discussion: true
+max_discussion_rounds: 3
+
+# Caching
+enable_cache: true
+cache_ttl: 5m
+max_cache_size: 104857600  # 100MB
+
+# Rate Limiting
+max_requests_per_minute: 10
+max_requests_per_hour: 50
